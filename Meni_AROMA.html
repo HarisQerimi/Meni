@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meni</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: repeating-linear-gradient(
+        45deg,
+        #f9f9f9,
+        #f9f9f9 40px,
+        #f0f0f0 40px,
+        #f0f0f0 80px
+      );
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    body::before {
+      content: "AROMA";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+      font-family: Georgia, serif;
+      font-size: 6rem;
+      color: rgba(0, 0, 0, 0.05);
+      letter-spacing: 1rem;
+      z-index: 0;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .category {
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .category h2 {
+      background: #333;
+      color: #fff;
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+
+    .item {
+      padding: 0.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .item-name {
+      font-weight: bold;
+    }
+
+    .item-description {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .item-price {
+      float: right;
+      font-weight: bold;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+  <h1>Meni</h1>
+  <div id="menu"></div>
+
+  <script>
+    const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR5oPTI5IYwMbwJPtNr12G8gEDozlzrnopIROUzMW0up1NK6pfkFod_alrg6V6O2r5E__LFpVBwuelS/pub?output=csv';
+
+    async function fetchMenuData() {
+      const response = await fetch(sheetURL);
+      const text = await response.text();
+      const parsed = Papa.parse(text, { header: true });
+      return parsed.data.filter(row => row.Naziv); // skip empty rows
+    }
+
+    function renderMenu(menuItems) {
+      const container = document.getElementById('menu');
+      const grouped = {};
+
+      menuItems.forEach(item => {
+        if (!grouped[item.Kategorija]) grouped[item.Kategorija] = [];
+        grouped[item.Kategorija].push(item);
+      });
+
+      for (const category in grouped) {
+        const section = document.createElement('div');
+        section.className = 'category';
+        section.innerHTML = `<h2>${category}</h2>`;
+
+        grouped[category].forEach(item => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'item';
+          const showDescription = item.Kategorija !== 'Pizza';
+          itemDiv.innerHTML = `
+            <span class="item-name">${item.Naziv}</span>
+            <span class="item-price">${item.Cijena}</span><br>
+            ${item.Opis && showDescription ? `<span class="item-description">${item.Opis}</span>` : ''}
+          `;
+          section.appendChild(itemDiv);
+        });
+
+        container.appendChild(section);
+      }
+    }
+
+    fetchMenuData().then(renderMenu);
+  </script>
+</body>
+</html>
