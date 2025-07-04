@@ -34,6 +34,12 @@
         radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
       pointer-events: none;
       z-index: 0;
+      animation: backgroundShift 20s ease-in-out infinite;
+    }
+    
+    @keyframes backgroundShift {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.8; }
     }
     
     .container {
@@ -53,6 +59,50 @@
       padding: 3rem 2rem;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+      animation: headerShimmer 3s ease-in-out infinite;
+      opacity: 0;
+    }
+    
+    @keyframes headerShimmer {
+      0%, 100% { transform: translateX(-100%) translateY(-100%); opacity: 0; }
+      50% { transform: translateX(0%) translateY(0%); opacity: 1; }
+    }
+    
+    .logo {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      margin: 0 auto 1rem;
+      display: block;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+      animation: logoFloat 3s ease-in-out infinite;
+    }
+    
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .logo:hover {
+      animation: logoHover 0.6s ease-in-out;
+    }
+    
+    @keyframes logoHover {
+      0% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.05) rotate(2deg); }
+      100% { transform: scale(1) rotate(0deg); }
     }
     
     h1 {
@@ -72,6 +122,12 @@
       color: #6b7280;
       font-weight: 300;
       letter-spacing: 0.05em;
+      animation: subtitleGlow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes subtitleGlow {
+      from { text-shadow: 0 0 5px rgba(102, 126, 234, 0.3); }
+      to { text-shadow: 0 0 20px rgba(102, 126, 234, 0.6); }
     }
     
     .category {
@@ -82,12 +138,29 @@
       overflow: hidden;
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+      position: relative;
+    }
+    
+    .category::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.05), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .category:hover::before {
+      opacity: 1;
     }
     
     .category:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
     }
     
     .category h2 {
@@ -109,12 +182,28 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s ease;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.6s ease;
     }
     
     .category:hover h2::before {
       left: 100%;
+    }
+    
+    .category h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+    
+    .category:hover h2::after {
+      transform: scaleX(1);
     }
     
     .items-container {
@@ -124,7 +213,7 @@
     .item {
       padding: 1.5rem;
       border-bottom: 1px solid rgba(226, 232, 240, 0.5);
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
       overflow: hidden;
     }
@@ -140,20 +229,35 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.05), transparent);
-      transition: left 0.3s ease;
+      background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.08), transparent);
+      transition: left 0.4s ease;
     }
     
     .item:hover::before {
       left: 100%;
     }
     
+    .item::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      transition: width 0.4s ease;
+    }
+    
+    .item:hover::after {
+      width: 100%;
+    }
+    
     .item:hover {
-      background: rgba(102, 126, 234, 0.03);
-      transform: translateX(10px);
+      background: rgba(102, 126, 234, 0.05);
+      transform: translateX(15px) scale(1.02);
       border-radius: 15px;
       margin: 0.25rem 0;
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.1);
+      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.15);
     }
     
     .item-header {
@@ -171,6 +275,11 @@
       color: #1f2937;
       flex: 1;
       margin-right: 1rem;
+      transition: color 0.3s ease;
+    }
+    
+    .item:hover .item-name {
+      color: #667eea;
     }
     
     .item-price {
@@ -182,6 +291,11 @@
       background-clip: text;
       white-space: nowrap;
       position: relative;
+      transition: transform 0.3s ease;
+    }
+    
+    .item:hover .item-price {
+      transform: scale(1.1);
     }
     
     .item-price::before {
@@ -192,7 +306,7 @@
       width: 0;
       height: 2px;
       background: linear-gradient(135deg, #667eea, #764ba2);
-      transition: width 0.3s ease;
+      transition: width 0.4s ease;
     }
     
     .item:hover .item-price::before {
@@ -206,6 +320,11 @@
       line-height: 1.5;
       position: relative;
       z-index: 1;
+      transition: color 0.3s ease;
+    }
+    
+    .item:hover .item-description {
+      color: #4b5563;
     }
     
     .loading {
@@ -217,22 +336,28 @@
     
     .spinner {
       display: inline-block;
-      width: 40px;
-      height: 40px;
-      border: 3px solid rgba(102, 126, 234, 0.3);
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(102, 126, 234, 0.3);
       border-radius: 50%;
       border-top-color: #667eea;
-      animation: spin 1s ease-in-out infinite;
+      animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
       margin-bottom: 1rem;
     }
     
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1); }
     }
     
     @media (max-width: 768px) {
       .container {
         padding: 1rem;
+      }
+      
+      .logo {
+        max-width: 250px;
       }
       
       h1 {
@@ -268,20 +393,54 @@
       }
       
       .item:hover {
-        transform: translateX(5px);
+        transform: translateX(8px) scale(1.01);
       }
     }
     
     .fade-in {
-      animation: fadeInUp 0.6s ease-out forwards;
+      animation: fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(40px);
     }
     
     @keyframes fadeInUp {
       to {
         opacity: 1;
         transform: translateY(0);
+      }
+    }
+    
+    .slide-in-left {
+      animation: slideInLeft 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    
+    @keyframes slideInLeft {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .bounce-in {
+      animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    
+    @keyframes bounceIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
       }
     }
   </style>
@@ -291,8 +450,8 @@
     <body>
         <div class="container">
             <div class="header fade-in">
-                <h1>AROMA</h1>
-
+                <img src="aroma_logo.png" alt="Aroma Logo" class="logo bounce-in">
+                <div class="subtitle slide-in-left">Dobrodošli u Aroma Fast Food - Goražde</div>
             </div>
 
             <div id="menu">
@@ -339,8 +498,7 @@
       for (const category in grouped) {
         const section = document.createElement('div');
         section.className = 'category fade-in';
-        section.style.animationDelay = `${delay * 0.1}s`;
-
+        section.style.animationDelay = `${delay * 0.15}s`;
         
         const categoryHeader = document.createElement('h2');
         categoryHeader.textContent = category;
@@ -349,9 +507,15 @@
         const itemsContainer = document.createElement('div');
         itemsContainer.className = 'items-container';
         
-        grouped[category].forEach(item => {
+        grouped[category].forEach((item, index) => {
           const itemDiv = document.createElement('div');
           itemDiv.className = 'item';
+          itemDiv.style.animationDelay = `${(delay * 0.15) + (index * 0.05)}s`;
+          
+          // Add staggered animation to items
+          setTimeout(() => {
+            itemDiv.classList.add('slide-in-left');
+          }, (delay * 150) + (index * 50));
           
           const itemHeader = document.createElement('div');
           itemHeader.className = 'item-header';
@@ -384,6 +548,25 @@
         delay++;
       }
     }
+    
+    // Add smooth scroll behavior
+    document.addEventListener('DOMContentLoaded', function() {
+      document.documentElement.style.scrollBehavior = 'smooth';
+      
+      // Add intersection observer for additional animations
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.animationPlayState = 'running';
+          }
+        });
+      });
+      
+      // Observe all animated elements
+      document.querySelectorAll('.fade-in, .slide-in-left, .bounce-in').forEach(el => {
+        observer.observe(el);
+      });
+    });
     
     // Initialize menu
     fetchMenuData().then(renderMenu);
