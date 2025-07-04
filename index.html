@@ -1,47 +1,55 @@
-.subtitle {
-      font-size: 1.2rem;
-      color: #6b7280;
-      font-weight: 300;
-      letter-spacing: 0.05em;
-      animation: subtitleGlow 2s ease-in-out infinite alternate;
+<style>
+  .subtitle {
+    font-size: 1.2rem;
+    color: #6b7280;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    animation: subtitleGlow 2s ease-in-out infinite alternate;
+  }
+
+  .social-links {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .instagram-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(193, 53, 132, 0.3);
+    animation: socialFloat 4s ease-in-out infinite;
+  }
+
+  .instagram-link:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(193, 53, 132, 0.4);
+  }
+
+  .instagram-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+
+  @keyframes socialFloat {
+    0%, 100% {
+      transform: translateY(0px);
     }
-    
-    .social-links {
-      margin-top: 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
+    50% {
+      transform: translateY(-5px);
     }
-    
-    .instagram-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
-      color: white;
-      text-decoration: none;
-      border-radius: 25px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(193, 53, 132, 0.3);
-      animation: socialFloat 4s ease-in-out infinite;
-    }
-    
-    .instagram-link:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 8px 25px rgba(193, 53, 132, 0.4);
-    }
-    
-    .instagram-icon {
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
-    }
-    
-    @keyframes socialFloat {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
+  }
+</style>
+
     }<!DOCTYPE html>
 <html lang="bs">
     <head>
