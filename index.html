@@ -339,7 +339,8 @@
       for (const category in grouped) {
         const section = document.createElement('div');
         section.className = 'category fade-in';
-        section.style.animationDelay = ${delay * 0.1}s;
+        section.style.animationDelay = `${delay * 0.1}s`;
+
         
         const categoryHeader = document.createElement('h2');
         categoryHeader.textContent = category;
