@@ -138,42 +138,22 @@
     padding: 1.5rem;
   }
 
-  .item {
-    background: white;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-    opacity: 0;
-    will-change: transform, opacity;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
+.item {
+  opacity: 0;
+  transform: translateY(40px); /* fallback */
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  will-change: transform, opacity;
+}
 
-  .item.visible {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
+.item.visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
 
-  .item.slide-in-left {
-    transform: translateX(-50px);
-  }
+.item.slide-in-left { transform: translateX(-50px); }
+.item.slide-in-right { transform: translateX(50px); }
+.item.slide-in-up { transform: translateY(50px); }
 
-  .item.slide-in-right {
-    transform: translateX(50px);
-  }
-
-  .item.slide-in-up {
-    transform: translateY(50px);
-  }
-
-  .item-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
 
   .item-price {
     background: linear-gradient(135deg, #667eea, #764ba2);
@@ -906,18 +886,31 @@
     }
 
     // Apply animation once the DOM is ready
-    animateSectionsOnView();
-  }
+ function animateSectionsOnView() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-in');
 
-  function animateSectionsOnView() {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('fade-in');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
+        const items = entry.target.querySelectorAll('.item');
+        items.forEach((item, i) => {
+          setTimeout(() => {
+            item.classList.add('visible');
+          }, i * 100);
+        });
+
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.2
+  });
+
+  document.querySelectorAll('.category').forEach(section => {
+    observer.observe(section);
+  });
+}
+, {
       threshold: 0.1
     });
 
