@@ -601,94 +601,113 @@
             </div>
         </div>
 
-        <script>
-    const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR5oPTI5IYwMbwJPtNr12G8gEDozlzrnopIROUzMW0up1NK6pfkFod_alrg6V6O2r5E__LFpVBwuelS/pub?output=csv';
-    
-    async function fetchMenuData() {
-      try {
-        const response = await fetch(sheetURL);
-        const text = await response.text();
-        const parsed = Papa.parse(text, { header: true });
-        return parsed.data.filter(row => row.Naziv && row.Naziv.trim() !== ''); // skip empty rows
-      } catch (error) {
-        console.error('Greška pri učitavanju menija:', error);
-        return [];
-      }
+      <script>
+  const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR5oPTI5IYwMbwJPtNr12G8gEDozlzrnopIROUzMW0up1NK6pfkFod_alrg6V6O2r5E__LFpVBwuelS/pub?output=csv';
+
+  async function fetchMenuData() {
+    try {
+      const response = await fetch(sheetURL);
+      const text = await response.text();
+      const parsed = Papa.parse(text, { header: true });
+      return parsed.data.filter(row => row.Naziv && row.Naziv.trim() !== '');
+    } catch (error) {
+      console.error('Greška pri učitavanju menija:', error);
+      return [];
     }
-    
-    function renderMenu(menuItems) {
-      const container = document.getElementById('menu');
-      
-      if (menuItems.length === 0) {
-        container.innerHTML = '<div class="loading">Greška pri učitavanju menija. Molimo pokušajte ponovo.</div>';
-        return;
-      }
-      
-      const grouped = {};
-      menuItems.forEach(item => {
-        const category = item.Kategorija || 'Ostalo';
-        if (!grouped[category]) grouped[category] = [];
-        grouped[category].push(item);
-      });
-      
-      container.innerHTML = '';
-      let delay = 0;
-      
-      for (const category in grouped) {
-        const section = document.createElement('div');
-        section.className = 'category fade-in';
-        section.style.animationDelay = `${delay * 0.2}s`;
-        
-        const categoryHeader = document.createElement('h2');
-        categoryHeader.textContent = category;
-        section.appendChild(categoryHeader);
-        
-        const itemsContainer = document.createElement('div');
-        itemsContainer.className = 'items-container';
-        
-        grouped[category].forEach((item, index) => {
-          const itemDiv = document.createElement('div');
-          itemDiv.className = 'item';
-          
-          const itemHeader = document.createElement('div');
-          itemHeader.className = 'item-header';
-          
-          const itemName = document.createElement('span');
-          itemName.className = 'item-name';
-          itemName.textContent = item.Naziv;
-          
-          const itemPrice = document.createElement('span');
-          itemPrice.className = 'item-price';
-          itemPrice.textContent = item.Cijena;
-          
-          itemHeader.appendChild(itemName);
-          itemHeader.appendChild(itemPrice);
-          itemDiv.appendChild(itemHeader);
-          
-          const showDescription = item.Kategorija !== 'Pizza';
-          if (item.Opis && item.Opis.trim() !== '' && showDescription) {
-            const itemDescription = document.createElement('div');
-            itemDescription.className = 'item-description';
-            itemDescription.textContent = item.Opis;
-            itemDiv.appendChild(itemDescription);
-          }
-          
-          itemsContainer.appendChild(itemDiv);
-        });
-        
-        section.appendChild(itemsContainer);
-        container.appendChild(section);
-        delay++;
-      }
+  }
+
+  function renderMenu(menuItems) {
+    const container = document.getElementById('menu');
+
+    if (menuItems.length === 0) {
+      container.innerHTML = '<div class="loading">Greška pri učitavanju menija. Molimo pokušajte ponovo.</div>';
+      return;
     }
-    
-    // Add smooth scroll behavior
-    document.addEventListener('DOMContentLoaded', function() {
-      document.documentElement.style.scrollBehavior = 'smooth';
+
+    const grouped = {};
+    menuItems.forEach(item => {
+      const category = item.Kategorija || 'Ostalo';
+      if (!grouped[category]) grouped[category] = [];
+      grouped[category].push(item);
     });
-    
-    // Initialize menu
-    fetchMenuData().then(renderMenu);
+
+    container.innerHTML = '';
+
+    for (const category in grouped) {
+      const section = document.createElement('div');
+      section.className = 'category'; // animation will be added later
+
+      const categoryHeader = document.createElement('h2');
+      categoryHeader.textContent = category;
+      section.appendChild(categoryHeader);
+
+      const itemsContainer = document.createElement('div');
+      itemsContainer.className = 'items-container';
+
+      grouped[category].forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'item';
+
+        const itemHeader = document.createElement('div');
+        itemHeader.className = 'item-header';
+
+        const itemName = document.createElement('span');
+        itemName.className = 'item-name';
+        itemName.textContent = item.Naziv;
+
+        const itemPrice = document.createElement('span');
+        itemPrice.className = 'item-price';
+        itemPrice.textContent = item.Cijena;
+
+        itemHeader.appendChild(itemName);
+        itemHeader.appendChild(itemPrice);
+        itemDiv.appendChild(itemHeader);
+
+        const showDescription = item.Kategorija !== 'Pizza';
+        if (item.Opis && item.Opis.trim() !== '' && showDescription) {
+          const itemDescription = document.createElement('div');
+          itemDescription.className = 'item-description';
+          itemDescription.textContent = item.Opis;
+          itemDiv.appendChild(itemDescription);
+        }
+
+        itemsContainer.appendChild(itemDiv);
+      });
+
+      section.appendChild(itemsContainer);
+      container.appendChild(section);
+    }
+
+    // Apply animation once the DOM is ready
+    animateSectionsOnView();
+  }
+
+  function animateSectionsOnView() {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    document.querySelectorAll('.category').forEach(section => {
+      observer.observe(section);
+    });
+  }
+
+  // Smooth scroll behavior
+  document.addEventListener('DOMContentLoaded', function () {
+    document.documentElement.style.scrollBehavior = 'smooth';
+  });
+
+  // Initialize
+  fetchMenuData().then(renderMenu);
+</script>
+
   </script>
     </body>
 </html>
