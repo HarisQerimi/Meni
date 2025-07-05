@@ -1,12 +1,71 @@
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 3rem 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  .logo {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto 1rem;
+    display: block;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+    background: white;
+    border-radius: 20px;
+    padding: 1rem;
+    animation: logoFloat 3s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
   .subtitle {
     font-size: 1.2rem;
     color: #6b7280;
     font-weight: 300;
     letter-spacing: 0.05em;
-    animation: subtitleGlow 2s ease-in-out infinite alternate;
-    will-change: transform, opacity;
-    backface-visibility: hidden;
   }
 
   .social-links {
@@ -21,21 +80,16 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+    background: #c13584;
     color: white;
     text-decoration: none;
     border-radius: 25px;
     font-weight: 500;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(193, 53, 132, 0.3);
-    animation: socialFloat 4s ease-in-out infinite;
-    will-change: transform, opacity;
-    backface-visibility: hidden;
   }
 
   .instagram-link:hover {
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(193, 53, 132, 0.4);
   }
 
   .instagram-icon {
@@ -44,82 +98,121 @@
     fill: currentColor;
   }
 
-  @keyframes socialFloat {
-    0%, 100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-5px);
-    }
-  }
-
-  @keyframes subtitleGlow {
-    from { text-shadow: 0 0 5px rgba(102, 126, 234, 0.3); }
-    to { text-shadow: 0 0 20px rgba(102, 126, 234, 0.6); }
-  }
-
   .fade-in {
-    animation: fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: fadeInUp 1.5s ease-out forwards;
     opacity: 0;
     transform: translateY(40px);
     will-change: transform, opacity;
-    backface-visibility: hidden;
   }
 
   @keyframes fadeInUp {
-    to {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
       opacity: 1;
       transform: translateY(0);
     }
   }
 
-  /* Safe backdrop-filter for mobile fallback */
-  .header {
+  .category {
     background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    padding: 1rem;
   }
 
-  @supports (backdrop-filter: blur(20px)) {
-    .header {
-      backdrop-filter: blur(20px);
-      background: rgba(255, 255, 255, 0.95);
-    }
+  .category h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 1rem;
+    border-radius: 15px;
   }
-  /* Ensure mobile devices properly animate key elements */
-.logo,
-.subtitle,
-.instagram-link,
-.fade-in {
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-}
 
-/* Updated fade-in animation for smoother appearance */
-.fade-in {
-  animation: fadeInUp 1.5s ease-out forwards;
-  opacity: 0;
-  transform: translateY(40px);
-}
+  .items-container {
+    padding: 1.5rem;
+  }
 
-@keyframes fadeInUp {
-  0% {
+  .item {
+    background: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
     opacity: 0;
+    will-change: transform, opacity;
     transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
   }
-  100% {
+
+  .item.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(0, 0);
   }
-}
 
+  .item.slide-in-left {
+    transform: translateX(-50px);
+  }
 
-  /* Respect user preferences */
-  @media (prefers-reduced-motion: reduce) {
-    * {
-      animation: none !important;
-      transition: none !important;
+  .item.slide-in-right {
+    transform: translateX(50px);
+  }
+
+  .item.slide-in-up {
+    transform: translateY(50px);
+  }
+
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .item-price {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
+
+  .item-description {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #6b7280;
+  }
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(102, 126, 234, 0.3);
+    border-radius: 50%;
+    border-top-color: #667eea;
+    animation: spin 1s infinite;
+    margin: 2rem auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 768px) {
+    .logo {
+      max-width: 250px;
+    }
+    h1 {
+      font-size: 2.5rem;
     }
   }
 </style>
+
 
 
     }<!DOCTYPE html>
@@ -602,8 +695,115 @@
       }
     }
   </style>
-        <script
-            src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+       <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script>
+  const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR5oPTI5IYwMbwJPtNr12G8gEDozlzrnopIROUzMW0up1NK6pfkFod_alrg6V6O2r5E__LFpVBwuelS/pub?output=csv';
+
+  async function fetchMenuData() {
+    try {
+      const response = await fetch(sheetURL);
+      const text = await response.text();
+      const parsed = Papa.parse(text, { header: true });
+      return parsed.data.filter(row => row.Naziv && row.Naziv.trim() !== '');
+    } catch (error) {
+      console.error('Greška pri učitavanju menija:', error);
+      return [];
+    }
+  }
+
+  function renderMenu(menuItems) {
+    const container = document.getElementById('menu');
+
+    if (menuItems.length === 0) {
+      container.innerHTML = '<div class="loading">Greška pri učitavanju menija.</div>';
+      return;
+    }
+
+    const grouped = {};
+    menuItems.forEach(item => {
+      const category = item.Kategorija || 'Ostalo';
+      if (!grouped[category]) grouped[category] = [];
+      grouped[category].push(item);
+    });
+
+    container.innerHTML = '';
+
+    for (const category in grouped) {
+      const section = document.createElement('div');
+      section.className = 'category';
+
+      const categoryHeader = document.createElement('h2');
+      categoryHeader.textContent = category;
+      section.appendChild(categoryHeader);
+
+      const itemsContainer = document.createElement('div');
+      itemsContainer.className = 'items-container';
+
+      grouped[category].forEach((item, index) => {
+        const itemDiv = document.createElement('div');
+        const directions = ['slide-in-left', 'slide-in-right', 'slide-in-up'];
+        const direction = directions[index % directions.length];
+        itemDiv.className = `item ${direction}`;
+
+        const itemHeader = document.createElement('div');
+        itemHeader.className = 'item-header';
+
+        const itemName = document.createElement('span');
+        itemName.textContent = item.Naziv;
+
+        const itemPrice = document.createElement('span');
+        itemPrice.className = 'item-price';
+        itemPrice.textContent = item.Cijena;
+
+        itemHeader.appendChild(itemName);
+        itemHeader.appendChild(itemPrice);
+        itemDiv.appendChild(itemHeader);
+
+        if (item.Opis && item.Opis.trim() !== '' && item.Kategorija !== 'Pizza') {
+          const itemDescription = document.createElement('div');
+          itemDescription.className = 'item-description';
+          itemDescription.textContent = item.Opis;
+          itemDiv.appendChild(itemDescription);
+        }
+
+        itemsContainer.appendChild(itemDiv);
+      });
+
+      section.appendChild(itemsContainer);
+      container.appendChild(section);
+    }
+
+    animateSectionsOnView();
+  }
+
+  function animateSectionsOnView() {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in');
+
+          const items = entry.target.querySelectorAll('.item');
+          items.forEach((item, i) => {
+            setTimeout(() => {
+              item.classList.add('visible');
+            }, i * 100);
+          });
+
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.2
+    });
+
+    document.querySelectorAll('.category').forEach(section => {
+      observer.observe(section);
+    });
+  }
+
+  fetchMenuData().then(renderMenu);
+</script>
+
     </head>
     <body>
         <div class="container">
