@@ -84,6 +84,33 @@
       background: rgba(255, 255, 255, 0.95);
     }
   }
+  /* Ensure mobile devices properly animate key elements */
+.logo,
+.subtitle,
+.instagram-link,
+.fade-in {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Updated fade-in animation for smoother appearance */
+.fade-in {
+  animation: fadeInUp 1.5s ease-out forwards;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
   /* Respect user preferences */
   @media (prefers-reduced-motion: reduce) {
